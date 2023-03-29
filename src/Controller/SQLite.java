@@ -172,12 +172,41 @@ public class SQLite {
         }
     }
     
-    public void addProduct(String name, int stock, double price) {
-        String sql = "INSERT INTO product(name,stock,price) VALUES('" + name + "','" + stock + "','" + price + "')";
-        
+     public void addProduct(String name, int stock, double price) {
+        String sql = "INSERT INTO product(name, stock, price) VALUES('" + name + "'," + stock + "," + price + ")";
+
         try (Connection conn = DriverManager.getConnection(driverURL);
-            Statement stmt = conn.createStatement()){
+             Statement stmt = conn.createStatement()){
             stmt.execute(sql);
+            System.out.println("Product added successfully.");
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
+    }
+
+    public void editProduct(int id, String name, int stock, double price) {
+        String sql = "UPDATE product SET name='" + name + "', stock=" + stock + ", price=" + price + " WHERE id=" + id;
+
+        try (Connection conn = DriverManager.getConnection(driverURL);
+             Statement stmt = conn.createStatement()){
+            stmt.executeUpdate(sql);
+            System.out.println("Product updated successfully.");
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
+    }
+
+    public void deleteProduct(int id) {
+        String sql = "DELETE FROM product WHERE id=" + id;
+
+        try (Connection conn = DriverManager.getConnection(driverURL);
+             Statement stmt = conn.createStatement()){
+            int rowsAffected = stmt.executeUpdate(sql);
+            if (rowsAffected > 0) {
+                System.out.println("Product deleted successfully.");
+            } else {
+                System.out.println("No product found with ID " + id);
+            }
         } catch (Exception ex) {
             System.out.print(ex);
         }
