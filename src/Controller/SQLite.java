@@ -359,8 +359,19 @@ public class SQLite {
             System.out.println("User " + username + " role has been changed.");
         } catch (Exception ex) {
             System.out.print(ex);
-            System.out.print(username + newrole);
         }
     }
-  
+    
+    public void changePass (String username, String password, String salt){
+        String sql = "UPDATE users SET password ='" + password + "' WHERE username='" + username + "';";
+        String sql2 = "UPDATE users SET salt ='" + salt + "' WHERE username='" + username + "';";
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+            stmt.execute(sql2);
+            System.out.println("User " + username + " password has been changed.");
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
+    }
 }

@@ -7,7 +7,9 @@ package View;
 
 import Controller.SQLite;
 import Model.User;
+import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Base64;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -190,7 +192,7 @@ public class MgmtUser extends javax.swing.JPanel {
             
             if(result != null){
                 sqlite.changeRole(String.valueOf(tableModel.getValueAt(table.getSelectedRow(), 0)), Integer.parseInt(String.valueOf(result.charAt(0))));
-                tableModel.setValueAt(Integer.parseInt(String.valueOf(result.charAt(0))),table.getSelectedRow(), 2);
+                tableModel.setValueAt(Integer.valueOf(String.valueOf(result.charAt(0))),table.getSelectedRow(), 2);
             }
         }
     }//GEN-LAST:event_editRoleBtnActionPerformed
@@ -224,6 +226,7 @@ public class MgmtUser extends javax.swing.JPanel {
 
     private void chgpassBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chgpassBtnActionPerformed
         if(table.getSelectedRow() >= 0){
+            String changedPass;
             JTextField password = new JPasswordField();
             JTextField confpass = new JPasswordField();
             designer(password, "PASSWORD");
@@ -236,12 +239,23 @@ public class MgmtUser extends javax.swing.JPanel {
             int result = JOptionPane.showConfirmDialog(null, message, "CHANGE PASSWORD", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null);
             
             if (result == JOptionPane.OK_OPTION) {
+                byte[] salt = generateSalt();
+                changedPass = sqlite.hashPass(password.getText(), salt);
+                sqlite.changePass(String.valueOf(tableModel.getValueAt(table.getSelectedRow(), 0)), 
+                        changedPass, Base64.getEncoder().encodeToString(salt));
+                password.setText(changedPass);
+                tableModel.setValueAt(changedPass, table.getSelectedRow(), 1);
                 System.out.println(password.getText());
-                System.out.println(confpass.getText());
             }
         }
     }//GEN-LAST:event_chgpassBtnActionPerformed
-
+    
+    private static byte[] generateSalt(){
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        return salt;
+    } 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton chgpassBtn;
