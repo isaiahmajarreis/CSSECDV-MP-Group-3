@@ -190,6 +190,7 @@ public class MgmtUser extends javax.swing.JPanel {
             
             if(result != null){
                 sqlite.changeRole(String.valueOf(tableModel.getValueAt(table.getSelectedRow(), 0)), Integer.parseInt(String.valueOf(result.charAt(0))));
+                tableModel.setValueAt(Integer.parseInt(String.valueOf(result.charAt(0))),table.getSelectedRow(), 2);
             }
         }
     }//GEN-LAST:event_editRoleBtnActionPerformed
