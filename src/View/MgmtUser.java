@@ -23,21 +23,26 @@ import javax.swing.table.DefaultTableModel;
  * @author beepxD
  */
 public class MgmtUser extends javax.swing.JPanel {
-
+   
     public SQLite sqlite;
     public DefaultTableModel tableModel;
     
-    public MgmtUser(SQLite sqlite) {
+    public MgmtUser(SQLite sqlite, int role) {
         initComponents();
         this.sqlite = sqlite;
         tableModel = (DefaultTableModel)table.getModel();
         table.getTableHeader().setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 14));
         
 //        UNCOMMENT TO DISABLE BUTTONS
-//        editBtn.setVisible(false);
-//        deleteBtn.setVisible(false);
-//        lockBtn.setVisible(false);
-//        chgpassBtn.setVisible(false);
+          if(role < 4)
+              editRoleBtn.setVisible(false);
+          if(role < 4)
+              deleteBtn.setVisible(false);
+          if(role < 4)
+              lockBtn.setVisible(false);
+          if(role < 5)
+              chgpassBtn.setVisible(false);
+  
     }
     
     public void init(){
