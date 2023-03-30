@@ -90,13 +90,14 @@ public class Login extends javax.swing.JPanel {
         usernameFld.setText("");
         passwordFld.setText("");
         
-        if (frame.isLocked(username) == false && frame.isRegistered(username, password)) {
-            // Password is correct, allow login
-            frame.mainNav();
-        }
+        if (frame.isLocked(username))
+             JOptionPane.showMessageDialog(this, "Your account is locked."); 
         
-        else if (frame.isLocked(username))
-             JOptionPane.showMessageDialog(this, "Your account is locked.");    
+        else if (frame.isLocked(username) == false && frame.isRegistered(username, password)) {
+            // Password is correct, allow login
+            frame.mainNav(frame.getRole(username));
+        } 
+       
         else {
             // Password is incorrect, increment the number of attempts
             numAttempts++;

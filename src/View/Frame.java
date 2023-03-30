@@ -6,6 +6,7 @@ import javax.swing.WindowConstants;
 
 public class Frame extends javax.swing.JFrame {
 
+    public String role;
     public Frame() {
         initComponents();
     }
@@ -179,22 +180,26 @@ public class Frame extends javax.swing.JFrame {
 
     private void adminBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminBtnActionPerformed
         adminHomePnl.showPnl("home");
-        contentView.show(Content, "adminHomePnl");
+        if("5".equals(role))
+            contentView.show(Content, "adminHomePnl");
     }//GEN-LAST:event_adminBtnActionPerformed
 
     private void managerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_managerBtnActionPerformed
         managerHomePnl.showPnl("home");
-        contentView.show(Content, "managerHomePnl");
+        if("5".equals(role))
+            contentView.show(Content, "managerHomePnl");
     }//GEN-LAST:event_managerBtnActionPerformed
 
     private void staffBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staffBtnActionPerformed
         staffHomePnl.showPnl("home");
-        contentView.show(Content, "staffHomePnl");
+        if("5".equals(role))
+            contentView.show(Content, "staffHomePnl");
     }//GEN-LAST:event_staffBtnActionPerformed
 
     private void clientBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientBtnActionPerformed
         clientHomePnl.showPnl("home");
-        contentView.show(Content, "clientHomePnl");
+        if("5".equals(role))
+            contentView.show(Content, "clientHomePnl");
     }//GEN-LAST:event_clientBtnActionPerformed
 
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
@@ -205,7 +210,7 @@ public class Frame extends javax.swing.JFrame {
     public Login loginPnl = new Login();
     public Register registerPnl = new Register();
     
-    private AdminHome adminHomePnl = new AdminHome();
+    private final AdminHome adminHomePnl = new AdminHome();
     private ManagerHome managerHomePnl = new ManagerHome();
     private StaffHome staffHomePnl = new StaffHome();
     private ClientHome clientHomePnl = new ClientHome();
@@ -232,7 +237,7 @@ public class Frame extends javax.swing.JFrame {
         Container.add(registerPnl, "registerPnl");
         Container.add(HomePnl, "homePnl");
         frameView.show(Container, "loginPnl");
-        
+
         Content.setLayout(contentView);
         Content.add(adminHomePnl, "adminHomePnl");
         Content.add(managerHomePnl, "managerHomePnl");
@@ -242,7 +247,20 @@ public class Frame extends javax.swing.JFrame {
         this.setVisible(true);
     }
     
-    public void mainNav(){
+    public void mainNav(String userRole){
+        role = userRole;
+        if("4".equals(role)){
+            Content.removeAll();
+            Content.add(managerHomePnl, "managerHomePnl");
+        }
+        if("3".equals(role)){
+            Content.removeAll();
+            Content.add(staffHomePnl, "staffHomePnl");
+        }
+        if("2".equals(role)){
+            Content.removeAll();
+            Content.add(clientHomePnl, "clientHomePnl");
+        }
         frameView.show(Container, "homePnl");
     }
     
@@ -262,14 +280,17 @@ public class Frame extends javax.swing.JFrame {
         return main.sqlite.getUser(username, password) != null;
     }
     
-    public boolean isLocked(String username){
-        return main.sqlite.checkLocked(username);
-    }
-    
     public String hashPassword(String password, byte[] salt){
         return main.sqlite.hashPass(password, salt);
     }
     
+    public boolean isLocked(String username){
+        return main.sqlite.checkLocked(username);
+    }
+    
+    public String getRole(String username){
+        return main.sqlite.getRole(username);
+    }
   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
