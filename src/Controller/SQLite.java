@@ -419,7 +419,7 @@ public class SQLite {
         try (Connection conn = DriverManager.getConnection(driverURL);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql)){    
-            return "0".equals(rs.getString("role"));
+            return "1".equals(rs.getString("role"));
         } catch (Exception ex) {
             System.out.print(ex);
             return true;
