@@ -371,7 +371,21 @@ public class SQLite {
         }
         catch(Exception ex){
         System.out.print(ex);
+     }
+        return null;
     }
+    
+    public String getRole (String username){
+        String sql = "SELECT role FROM users WHERE username='" + username + "';";
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)){
+            if(rs.next()){
+                return rs.getString("role");
+            }
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
         return null;
     }
   
@@ -400,6 +414,17 @@ public class SQLite {
         }
     }
     
+    public boolean checkLocked(String username){
+        String sql = "SELECT role FROM users WHERE username='" + username +"';";
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)){    
+            return "0".equals(rs.getString("role"));
+        } catch (Exception ex) {
+            System.out.print(ex);
+            return true;
+        }
+    }
     
     public void changePass (String username, String password, String salt){
         String sql = "UPDATE users SET password ='" + password + "' WHERE username='" + username + "';";
@@ -411,18 +436,6 @@ public class SQLite {
             System.out.println("User " + username + " password has been changed.");
         } catch (Exception ex) {
             System.out.print(ex);
-        }
-    }
-    
-    public boolean checkLocked(String username){
-        String sql = "SELECT role FROM users WHERE username='" + username +"';";
-        try (Connection conn = DriverManager.getConnection(driverURL);
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql)){    
-            return "0".equals(rs.getString("role"));
-        } catch (Exception ex) {
-            System.out.print(ex);
-            return true;
         }
     }
 
