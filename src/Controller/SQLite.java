@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.PreparedStatement;
 
 public class SQLite {
     
@@ -399,6 +400,7 @@ public class SQLite {
         }
     }
     
+    
     public void changePass (String username, String password, String salt){
         String sql = "UPDATE users SET password ='" + password + "' WHERE username='" + username + "';";
         String sql2 = "UPDATE users SET salt ='" + salt + "' WHERE username='" + username + "';";
@@ -411,4 +413,17 @@ public class SQLite {
             System.out.print(ex);
         }
     }
+    
+    public boolean checkLocked(String username){
+        String sql = "SELECT role FROM users WHERE username='" + username +"';";
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)){    
+            return "0".equals(rs.getString("role"));
+        } catch (Exception ex) {
+            System.out.print(ex);
+            return true;
+        }
+    }
+
 }
