@@ -173,11 +173,48 @@ public class SQLite {
     }
     
     public void addProduct(String name, int stock, double price) {
-        String sql = "INSERT INTO product(name,stock,price) VALUES('" + name + "','" + stock + "','" + price + "')";
-        
+        String sql = "INSERT INTO product(name, stock, price) VALUES(?,?,?)";
+
         try (Connection conn = DriverManager.getConnection(driverURL);
-            Statement stmt = conn.createStatement()){
-            stmt.execute(sql);
+             PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setString(1, name);
+            stmt.setInt(2, stock);
+            stmt.setDouble(3, price);
+            stmt.executeUpdate();
+            System.out.println("Product added successfully.");
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
+    }
+
+    public void editProduct(int id, String name, int stock, double price) {
+        String sql = "UPDATE product SET name=?, stock=?, price=? WHERE id=?";
+
+        try (Connection conn = DriverManager.getConnection(driverURL);
+             PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setString(1, name);
+            stmt.setInt(2, stock);
+            stmt.setDouble(3, price);
+            stmt.setInt(4, id);
+            stmt.executeUpdate();
+            System.out.println("Product updated successfully.");
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
+    }
+
+    public void deleteProduct(int id) {
+        String sql = "DELETE FROM product WHERE id=?";
+
+        try (Connection conn = DriverManager.getConnection(driverURL);
+             PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setInt(1, id);
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Product deleted successfully.");
+            } else {
+                System.out.println("No product found with ID " + id);
+            }
         } catch (Exception ex) {
             System.out.print(ex);
         }
