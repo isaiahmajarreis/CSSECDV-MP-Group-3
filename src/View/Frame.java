@@ -262,9 +262,14 @@ public class Frame extends javax.swing.JFrame {
         return main.sqlite.getUser(username, password) != null;
     }
     
+    public boolean isLocked(String username){
+        return main.sqlite.checkLocked(username);
+    }
+    
     public String hashPassword(String password, byte[] salt){
         return main.sqlite.hashPass(password, salt);
     }
+    
   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
