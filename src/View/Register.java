@@ -112,7 +112,7 @@ public class Register extends javax.swing.JPanel {
         confpassFld.setText("");
 
         if (password.equals(confPassword)) {
-         
+            
             if (pattern.matcher(username).matches()){
                 // passwords match & username is valid
                 byte[] salt = generateSalt();
@@ -136,6 +136,7 @@ public class Register extends javax.swing.JPanel {
         frame.loginNav();
     }//GEN-LAST:event_backBtnActionPerformed
     
+    // Generates a salt based for hashing (SHA-256) 
     private static byte[] generateSalt(){
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];

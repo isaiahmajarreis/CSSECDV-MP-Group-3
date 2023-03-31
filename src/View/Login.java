@@ -95,6 +95,7 @@ public class Login extends javax.swing.JPanel {
             frame.mainNav(frame.getRole(username));
         } 
         
+        // Disabled accounts are not allowed to login
         else if (frame.isLocked(username) && frame.isRegistered(username, password))
              JOptionPane.showMessageDialog(this, "Your account is locked.");
        

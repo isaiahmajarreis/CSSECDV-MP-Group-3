@@ -249,6 +249,7 @@ public class Frame extends javax.swing.JFrame {
     
     public void mainNav(String userRole){
         role = userRole;
+        // User can only access their role's home page
         if("5".equals(role)){
             Content.removeAll();
             Content.add(adminHomePnl, "adminHomePnl");
@@ -280,18 +281,22 @@ public class Frame extends javax.swing.JFrame {
         main.sqlite.addUser(username, password, salt);
     }
     
+    // Checks if the user exists in the database and is registered
     public boolean isRegistered(String username, String password){
         return main.sqlite.getUser(username, password) != null;
     }
     
+    // Hashes the password based on the generated salt
     public String hashPassword(String password, byte[] salt){
         return main.sqlite.hashPass(password, salt);
     }
     
+    // Checks if the user is disabled by the admin/manager
     public boolean isLocked(String username){
         return main.sqlite.checkLocked(username);
     }
     
+    // Returns the role assigned to the username
     public String getRole(String username){
         return main.sqlite.getRole(username);
     }

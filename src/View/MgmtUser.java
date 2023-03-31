@@ -34,6 +34,7 @@ public class MgmtUser extends javax.swing.JPanel {
         tableModel = (DefaultTableModel)table.getModel();
         table.getTableHeader().setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 14));
         
+        // Sets accessible buttons based on role
         userRole = role;
         if(role < 4)
             editRoleBtn.setVisible(false);
@@ -189,19 +190,19 @@ public class MgmtUser extends javax.swing.JPanel {
     private void editRoleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editRoleBtnActionPerformed
         if(table.getSelectedRow() >= 0){
             String[] options = {"1-DISABLED","2-CLIENT","3-STAFF","4-MANAGER","5-ADMIN"};
-            JComboBox optionList = new JComboBox(options);
-            
+            JComboBox optionList = new JComboBox(options);   
             optionList.setSelectedIndex((int)tableModel.getValueAt(table.getSelectedRow(), 2) - 1);
-            
             String result = (String) JOptionPane.showInputDialog(null, "USER: " + tableModel.getValueAt(table.getSelectedRow(), 0), 
                 "EDIT USER ROLE", JOptionPane.QUESTION_MESSAGE, null, options, options[(int)tableModel.getValueAt(table.getSelectedRow(), 2) - 1]);
-            
+
             if(result != null ){
+                // Admins are allowed to change the roles of all accounts
                 if(userRole == 5){
                     sqlite.changeRole(String.valueOf(tableModel.getValueAt(table.getSelectedRow(), 0)), Integer.parseInt(String.valueOf(result.charAt(0))));
                     tableModel.setValueAt(Integer.valueOf(String.valueOf(result.charAt(0))),table.getSelectedRow(), 2);
                 }
                 else{
+                    // Managers can only change roles of clients and staff 
                     if((int)tableModel.getValueAt(table.getSelectedRow(), 2) < 4 && Integer.parseInt(String.valueOf(result.charAt(0))) < 4){
                         sqlite.changeRole(String.valueOf(tableModel.getValueAt(table.getSelectedRow(), 0)), Integer.parseInt(String.valueOf(result.charAt(0))));
                         tableModel.setValueAt(Integer.valueOf(String.valueOf(result.charAt(0))),table.getSelectedRow(), 2);
@@ -232,10 +233,9 @@ public class MgmtUser extends javax.swing.JPanel {
             if("1".equals(tableModel.getValueAt(table.getSelectedRow(), 3) + "")){
                 state = "unlock";
             }
-            
             int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to " + state + " " + tableModel.getValueAt(table.getSelectedRow(), 0) + "?", "DELETE USER", JOptionPane.YES_NO_OPTION);
-            
             if (result == JOptionPane.YES_OPTION) {
+                // Sets the user's value to 1 (disabled)
                 sqlite.changeRole(String.valueOf(tableModel.getValueAt(table.getSelectedRow(), 0)), 1);
             }
         }
@@ -252,10 +252,10 @@ public class MgmtUser extends javax.swing.JPanel {
             Object[] message = {
                 "Enter New Password:", password, confpass
             };
-
-            int result = JOptionPane.showConfirmDialog(null, message, "CHANGE PASSWORD", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null);
-            
+            int result = JOptionPane.showConfirmDialog(null, message, "CHANGE PASSWORD",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null);
             if (result == JOptionPane.OK_OPTION) {
+                // A new salt is generated and stored alongside the new password 
                 byte[] salt = generateSalt();
                 changedPass = sqlite.hashPass(password.getText(), salt);
                 sqlite.changePass(String.valueOf(tableModel.getValueAt(table.getSelectedRow(), 0)), 
