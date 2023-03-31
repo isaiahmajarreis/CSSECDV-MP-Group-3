@@ -249,6 +249,10 @@ public class Frame extends javax.swing.JFrame {
     
     public void mainNav(String userRole){
         role = userRole;
+        if("5".equals(role)){
+            Content.removeAll();
+            Content.add(adminHomePnl, "adminHomePnl");
+        }
         if("4".equals(role)){
             Content.removeAll();
             Content.add(managerHomePnl, "managerHomePnl");

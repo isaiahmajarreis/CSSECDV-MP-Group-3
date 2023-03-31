@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class MgmtUser extends javax.swing.JPanel {
    
+    public int userRole;
     public SQLite sqlite;
     public DefaultTableModel tableModel;
     
@@ -33,15 +34,15 @@ public class MgmtUser extends javax.swing.JPanel {
         tableModel = (DefaultTableModel)table.getModel();
         table.getTableHeader().setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 14));
         
-//        UNCOMMENT TO DISABLE BUTTONS
-          if(role < 4)
-              editRoleBtn.setVisible(false);
-          if(role < 4)
-              deleteBtn.setVisible(false);
-          if(role < 4)
-              lockBtn.setVisible(false);
-          if(role < 5)
-              chgpassBtn.setVisible(false);
+        userRole = role;
+        if(role < 4)
+            editRoleBtn.setVisible(false);
+        if(role < 4)
+            deleteBtn.setVisible(false);
+        if(role < 4)
+            lockBtn.setVisible(false);
+        if(role < 5)
+            chgpassBtn.setVisible(false);
   
     }
     
@@ -195,9 +196,20 @@ public class MgmtUser extends javax.swing.JPanel {
             String result = (String) JOptionPane.showInputDialog(null, "USER: " + tableModel.getValueAt(table.getSelectedRow(), 0), 
                 "EDIT USER ROLE", JOptionPane.QUESTION_MESSAGE, null, options, options[(int)tableModel.getValueAt(table.getSelectedRow(), 2) - 1]);
             
-            if(result != null){
-                sqlite.changeRole(String.valueOf(tableModel.getValueAt(table.getSelectedRow(), 0)), Integer.parseInt(String.valueOf(result.charAt(0))));
-                tableModel.setValueAt(Integer.valueOf(String.valueOf(result.charAt(0))),table.getSelectedRow(), 2);
+            if(result != null ){
+                if(userRole == 5){
+                    sqlite.changeRole(String.valueOf(tableModel.getValueAt(table.getSelectedRow(), 0)), Integer.parseInt(String.valueOf(result.charAt(0))));
+                    tableModel.setValueAt(Integer.valueOf(String.valueOf(result.charAt(0))),table.getSelectedRow(), 2);
+                }
+                else{
+                    if((int)tableModel.getValueAt(table.getSelectedRow(), 2) < 4 && Integer.parseInt(String.valueOf(result.charAt(0))) < 4){
+                        sqlite.changeRole(String.valueOf(tableModel.getValueAt(table.getSelectedRow(), 0)), Integer.parseInt(String.valueOf(result.charAt(0))));
+                        tableModel.setValueAt(Integer.valueOf(String.valueOf(result.charAt(0))),table.getSelectedRow(), 2);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(this, "You cannot change this user's role.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
             }
         }
     }//GEN-LAST:event_editRoleBtnActionPerformed
