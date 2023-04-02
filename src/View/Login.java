@@ -95,7 +95,6 @@ public class Login extends javax.swing.JPanel {
             frame.mainNav(frame.getRole(username));
         } 
         
-        // Disabled accounts are not allowed to login
         else if (frame.isLocked(username) && frame.isRegistered(username, password))
              JOptionPane.showMessageDialog(this, "Your account is locked.");
        
@@ -104,6 +103,7 @@ public class Login extends javax.swing.JPanel {
             numAttempts++;
             if (numAttempts >= 3) {
                 // If the number of attempts is greater than or equal to 3, lock out the account
+                frame.lockAccount(username);
                 JOptionPane.showMessageDialog(this, "Account locked due to number of failed login attempts.");
                 usernameFld.setEnabled(false);
                 passwordFld.setEnabled(false);
