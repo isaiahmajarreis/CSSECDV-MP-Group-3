@@ -388,6 +388,28 @@ public class SQLite {
         }
         return null;
     }
+
+    // returns true if there is a user in the users table with the given username and password, and false otherwise.
+    public boolean loginAttempt(String username, String password) {
+        String sql = "SELECT COUNT(*) FROM users WHERE username = ? AND password = ?";
+        boolean loginSuccessful = false;
+
+        try (Connection conn = DriverManager.getConnection(driverURL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+            if (count == 1) {
+                loginSuccessful = true;
+            }
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
+
+        return loginSuccessful;
+    }
   
     public String hashPass (String password, byte[] salt){
         // generate a random 16 byte salt
