@@ -135,6 +135,7 @@ public class MgmtLogs extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
+        System.out.println("Logs cleared.");
         
     }//GEN-LAST:event_clearBtnActionPerformed
 
