@@ -33,7 +33,7 @@ public class ClientHome extends javax.swing.JPanel {
     }
     
     public void init(SQLite sqlite){
-        mgmtHistory = new MgmtHistory(sqlite);
+        mgmtHistory = new MgmtHistory(sqlite, 2);
         mgmtLogs = new MgmtLogs(sqlite);
         mgmtProduct = new MgmtProduct(sqlite);
         mgmtUser = new MgmtUser(sqlite, 2);
@@ -49,7 +49,7 @@ public class ClientHome extends javax.swing.JPanel {
 //        historyBtn.setVisible(false);
         usersBtn.setVisible(false);
 //        productsBtn.setVisible(false);
-//        logsBtn.setVisible(false);
+        logsBtn.setVisible(false);
     }
     
     public void showPnl(String panelName){

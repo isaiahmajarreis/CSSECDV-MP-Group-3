@@ -7,6 +7,7 @@ import javax.swing.WindowConstants;
 public class Frame extends javax.swing.JFrame {
 
     public String role;
+    public String name;
     public Frame() {
         initComponents();
     }
@@ -186,7 +187,7 @@ public class Frame extends javax.swing.JFrame {
 
     private void managerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_managerBtnActionPerformed
         managerHomePnl.showPnl("home");
-        if("5".equals(role))
+        if("4".equals(role))
             contentView.show(Content, "managerHomePnl");
     }//GEN-LAST:event_managerBtnActionPerformed
 
@@ -211,9 +212,9 @@ public class Frame extends javax.swing.JFrame {
     public Register registerPnl = new Register();
     
     private final AdminHome adminHomePnl = new AdminHome();
-    private ManagerHome managerHomePnl = new ManagerHome();
-    private StaffHome staffHomePnl = new StaffHome();
-    private ClientHome clientHomePnl = new ClientHome();
+    private final ManagerHome managerHomePnl = new ManagerHome();
+    private final StaffHome staffHomePnl = new StaffHome();
+    private final ClientHome clientHomePnl = new ClientHome();
     
     private CardLayout contentView = new CardLayout();
     private CardLayout frameView = new CardLayout();
@@ -247,8 +248,13 @@ public class Frame extends javax.swing.JFrame {
         this.setVisible(true);
     }
     
-    public void mainNav(String userRole){
+    public void mainNav(String userRole, String username){
+        name = username;
         role = userRole;
+        if("5".equals(role)){
+            Content.removeAll();
+            Content.add(adminHomePnl, "adminHomePnl");
+        }
         if("4".equals(role)){
             Content.removeAll();
             Content.add(managerHomePnl, "managerHomePnl");

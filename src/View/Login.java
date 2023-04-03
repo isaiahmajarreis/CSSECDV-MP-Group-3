@@ -92,7 +92,7 @@ public class Login extends javax.swing.JPanel {
          
         if (frame.isLocked(username) == false && frame.isRegistered(username, password)) {
             // Password is correct, allow login
-            frame.mainNav(frame.getRole(username));
+            frame.mainNav(frame.getRole(username), username);
         } 
         
         else if (frame.isLocked(username) && frame.isRegistered(username, password))

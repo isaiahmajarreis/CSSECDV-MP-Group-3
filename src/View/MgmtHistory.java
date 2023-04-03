@@ -6,6 +6,7 @@
 package View;
 
 import Controller.SQLite;
+import Model.User;
 import Model.History;
 import Model.Product;
 import java.util.ArrayList;
@@ -19,10 +20,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class MgmtHistory extends javax.swing.JPanel {
 
+    public User user;
     public SQLite sqlite;
     public DefaultTableModel tableModel;
     
-    public MgmtHistory(SQLite sqlite) {
+    public MgmtHistory(SQLite sqlite, int role) {
         initComponents();
         this.sqlite = sqlite;
         tableModel = (DefaultTableModel)table.getModel();
@@ -33,6 +35,7 @@ public class MgmtHistory extends javax.swing.JPanel {
         table.getColumnModel().getColumn(3).setCellRenderer(rightAlign);
         table.getColumnModel().getColumn(4).setCellRenderer(rightAlign);
         table.getColumnModel().getColumn(5).setCellRenderer(rightAlign);
+        
         
 //        UNCOMMENT TO DISABLE BUTTONS
 //        searchBtn.setVisible(false);
